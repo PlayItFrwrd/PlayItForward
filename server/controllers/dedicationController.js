@@ -1,4 +1,4 @@
-const Dedications = require('../models/dedicationModel'); //DB
+const Dedications = require('../models/DedicationModel'); //DB
 
 //GET ALL DEDICATIONS
 exports.getAllDedications = async (req, res, next) => {
