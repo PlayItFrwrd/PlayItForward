@@ -1,16 +1,21 @@
-const express = require('express');
-
-const dedicationController = require('./controllers/dedicationController');
+import express from 'express';
 const app = express();
-
-const cors = require('cors');
-const corsOptions = {
-  origin: ['http://localhost:5173'],
-};
-
-app.use(express.json());
-//app.use(express.json({extended: true}));
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import dedicationController from './controllers/dedicationController.js';
+dotenv.config();
+//MONGODB MODULE
+import ConnectionDB from './db.js';
+//SET DB CONNECTION
+ConnectionDB();
+//SET CORS POLICIES
+const corsOptions = { origin: ['http://localhost:5173'] };
 app.use(cors(corsOptions));
+//MIDDLEWARE TO SHOW HTTP RESQUEST IN CONSOLE
+app.use(morgan('dev'));
+//MIDDLEWARE TO PARSE JSON TO OBJECT
+app.use(express.json());
 
 app.get('/api', dedicationController.getAllDedications, (req, res) => {
   return res.status(200).json(res.locals.dedications);
@@ -20,19 +25,21 @@ app.post('/api', dedicationController.createDedication, (req, res) => {
   return res.status(201).json(res.locals.newDedication);
 });
 
-//404 Nt found handler
+//404 Not found handler
 app.use('*', (req, res) => {
   return res.status(404).send('Not found');
 });
 
 //Error Handler
 app.use((err, req, res, next) => {
-  // console.log('error', err);
-  const statusCode = err.status || 500; // Usamos el status 500 como valor por defecto
+  console.log('error', err);
+  const statusCode = err.status; 
   const message = err.message.err;
   return res.status(statusCode).send({ message: message });
 });
 
-app.listen(4000, () => {
-  console.log('server running on port 4000');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`);
 });
