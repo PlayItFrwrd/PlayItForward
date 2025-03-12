@@ -1,7 +1,7 @@
-const Dedications = require('../models/DedicationModel'); //DB
-
+// const Dedications = require('../models/DedicationModel'); //DB
+import Dedications from '../models/DedicationModel.js';
 //GET ALL DEDICATIONS
-exports.getAllDedications = async (req, res, next) => {
+const getAllDedications = async (req, res, next) => {
   try {
     const dedications = await Dedications.find();
     if (!dedications) {
@@ -26,35 +26,38 @@ exports.getAllDedications = async (req, res, next) => {
 };
 
 //POST DEDICATION
-exports.createDedication = async (req, res, next) => {
-  const { from, recipient, message, songTitle, songArtist, songLink } =
-    req.body;
+const createDedication = async (req, res, next) => {
+  const { songTitle, songArtist, songLink, message, from, recipient } = req.body;
 
   try {
-    if (
-      !from ||
-      !recipient ||
-      !message ||
-      !songTitle ||
-      !songArtist ||
-      !songLink
-    ) {
+    if (!songTitle || !songArtist || !songLink || !message || !recipient) {
       return next({
-        log: 'Express error in createDedication. Any field or some fields are not being received on the request body',
+        log: 'Express error in createDedication. Missing required fields in request body',
         status: 400, //Bad request
-        message: { err: 'Request must contain all fields' },
+        message: { err: 'Missing required fields' },
       });
     } else {
-      const newDedication = new Dedications(req.body);
+      const newDedication = new Dedications({
+        song: {
+          title: songTitle,
+          artist: songArtist,
+          link: songLink,
+        },
+        message: message,
+        sender_name: from || 'Anonymous', 
+        recipient_name: recipient,
+      });
       await newDedication.save();
       res.locals.newDedication = newDedication;
       next();
     }
   } catch (err) {
     return next({
-      log: `Try/catch error from createDedication trying to add a new dedication to the database: ${err}`,
+      log: `Try/catch error from createDedication: ${err}`,
       status: 500,
-      message: { err: 'Failed to add dedication to the database' },
+      message: { err: 'Failed to create dedication.' },
     });
   }
 };
+
+export default { getAllDedications, createDedication };
