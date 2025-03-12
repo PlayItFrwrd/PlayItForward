@@ -1,35 +1,138 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent default reload behavior of submission form when submitted
+    createPost(dataForm);
+  };
+
+  /** const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      });
+      //RESPONSE FROM API TO CLIENT_SIDE
+      const json = await response.json();
+      //   console.log(json);
+      if ( */
+
+  //HTTP REQUEST POST
+  const createPost = async (anyArg) => {
+    
+      try{
+        const response = await fetch ("http://localhost:4000/api", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(anyArg),
+      })
+
+      if(!response.ok) {
+        throw new Error(`HTTP Error ${response.status}`) // error instance is created to be passed to catch block
+      }
+        
+      }catch(err){
+      console.error(`Error creating post:`, err)
+      }
+  };
+
+  //songTitle, songArtist, songLink, message, from, recipient
+  const [dataForm, setDataForm] = useState({
+    songTitle: '',
+    songArtist: '',
+    songLink: '',
+    message: '',
+    from: '',
+    recipient: '',
+  });
+
+  const onChange = (e) => {
+    setDataForm({
+      ...dataForm, // spread operator creates shallow copy of initial object -- in this case, useState
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Name:
+            <input
+              type='text'
+              name='from'
+              onChange={onChange}
+              value={dataForm.from}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Recipient:
+            <input
+              type='text'
+              name='recipient'
+              onChange={onChange}
+              value={dataForm.recipient}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Message:
+            <textarea
+              type='text'
+              name='message'
+              onChange={onChange}
+              value={dataForm.message}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Song Title:
+            <input
+              type='text'
+              name='songTitle'
+              onChange={onChange}
+              value={dataForm.songTitle}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Song Artist:
+            <input
+              type='text'
+              name='songArtist'
+              onChange={onChange}
+              value={dataForm.songArtist}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Song Link:
+            <input
+              type='text'
+              name='songLink'
+              onChange={onChange}
+              value={dataForm.songLink}
+            />
+          </label>
+          <br />
+          <br />
+          <input type='submit' value='submit' />
+        </form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className='read-the-docs'>Placeholder footer</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
