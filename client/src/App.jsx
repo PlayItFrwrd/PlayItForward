@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css';
+import './index.css';
 
 function App() {
   const handleSubmit = (event) => {
@@ -7,37 +7,22 @@ function App() {
     createPost(dataForm);
   };
 
-  /** const response = await fetch(url, {
+  const createPost = async (anyArg) => {
+    try {
+      const response = await fetch('http://localhost:4000/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newData),
+        body: JSON.stringify(anyArg),
       });
-      //RESPONSE FROM API TO CLIENT_SIDE
-      const json = await response.json();
-      //   console.log(json);
-      if ( */
 
-  //HTTP REQUEST POST
-  const createPost = async (anyArg) => {
-    
-      try{
-        const response = await fetch ("http://localhost:4000/api", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(anyArg),
-      })
-
-      if(!response.ok) {
-        throw new Error(`HTTP Error ${response.status}`) // error instance is created to be passed to catch block
+      if (!response.ok) {
+        throw new Error(`HTTP Error ${response.status}`); // error instance is created to be passed to catch block
       }
-        
-      }catch(err){
-      console.error(`Error creating post:`, err)
-      }
+    } catch (err) {
+      console.error(`Error creating post:`, err);
+    }
   };
 
   //songTitle, songArtist, songLink, message, from, recipient
@@ -59,11 +44,12 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='text-red-800 text-lg px-50 py-50'>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
             <input
+              className='border-2 rounded-sm border-blue-500'
               type='text'
               name='from'
               onChange={onChange}
