@@ -10,7 +10,11 @@ import ConnectionDB from './db.js';
 //SET DB CONNECTION
 ConnectionDB();
 //SET CORS POLICIES
-const corsOptions = { origin: ['http://localhost:5173'] };
+const corsOptions = {
+  origin: ['http://127.0.0.1:5173'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+};
 app.use(cors(corsOptions));
 //MIDDLEWARE TO SHOW HTTP RESQUEST IN CONSOLE
 app.use(morgan('dev'));
@@ -33,12 +37,12 @@ app.use('*', (req, res) => {
 //Error Handler
 app.use((err, req, res, next) => {
   console.log('error', err);
-  const statusCode = err.status; 
+  const statusCode = err.status;
   const message = err.message.err;
   return res.status(statusCode).send({ message: message });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);

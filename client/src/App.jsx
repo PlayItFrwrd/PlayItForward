@@ -2,12 +2,22 @@ import { useState } from 'react';
 import './index.css';
 
 function App() {
-  const handleSubmit = (event) => {
-    event.preventDefault(); // prevent default reload behavior of submission form when submitted
-    createPost(dataForm);
-  };
+  //songTitle, songArtist, songLink, message, from, recipient
+  const [dataForm, setDataForm] = useState({
+    songTitle: '',
+    songArtist: '',
+    songLink: '',
+    message: '',
+    from: '',
+    recipient: '',
+  });
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  //HTTP REQUEST POST
   const createPost = async (anyArg) => {
+    // console.log('sending data to backend:', anyArg);
+
     try {
       const response = await fetch('http://localhost:4000/api', {
         method: 'POST',
@@ -20,26 +30,32 @@ function App() {
       if (!response.ok) {
         throw new Error(`HTTP Error ${response.status}`); // error instance is created to be passed to catch block
       }
+      setIsSubmitted(true);
+      setDataForm({
+        songTitle: '',
+        songArtist: '',
+        songLink: '',
+        message: '',
+        from: '',
+        recipient: '',
+      });
     } catch (err) {
       console.error(`Error creating post:`, err);
     }
   };
 
-  //songTitle, songArtist, songLink, message, from, recipient
-  const [dataForm, setDataForm] = useState({
-    songTitle: '',
-    songArtist: '',
-    songLink: '',
-    message: '',
-    from: '',
-    recipient: '',
-  });
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent default reload behavior of submission form when submitted
+    createPost(dataForm);
+  };
 
   const onChange = (e) => {
     setDataForm({
       ...dataForm, // spread operator creates shallow copy of initial object -- in this case, useState
       [e.target.name]: e.target.value,
     });
+
+    setIsSubmitted(false);
   };
 
   return (
@@ -115,6 +131,7 @@ function App() {
           <br />
           <input type='submit' value='submit' />
         </form>
+        {isSubmitted && <p>Dedication successfully sent!</p>}
       </div>
       <p className='read-the-docs'>Placeholder footer</p>
     </>
