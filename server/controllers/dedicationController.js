@@ -44,7 +44,7 @@ const createDedication = async (req, res, next) => {
           link: songLink,
         },
         message: message,
-        sender_name: from || 'Anonymous', 
+        sender_name: from, 
         recipient_name: recipient,
       });
       await newDedication.save();
