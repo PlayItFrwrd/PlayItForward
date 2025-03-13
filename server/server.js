@@ -10,12 +10,12 @@ import ConnectionDB from './db.js';
 //SET DB CONNECTION
 ConnectionDB();
 //SET CORS POLICIES
-const corsOptions = {
-  origin: ['http://127.0.0.1:5173'],
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: ['http://127.0.0.1:5173'],
+//   methods: ['GET', 'POST'],
+//   allowedHeaders: ['Content-Type'],
+// };
+app.use(cors());
 //MIDDLEWARE TO SHOW HTTP RESQUEST IN CONSOLE
 app.use(morgan('dev'));
 //MIDDLEWARE TO PARSE JSON TO OBJECT
