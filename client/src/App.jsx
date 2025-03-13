@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css';
+import './index.css';
 
 function App() {
   //songTitle, songArtist, songLink, message, from, recipient
@@ -60,11 +60,12 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='text-red-800 text-lg px-50 py-50'>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
             <input
+              className='border-2 rounded-sm border-blue-500'
               type='text'
               name='from'
               onChange={onChange}
