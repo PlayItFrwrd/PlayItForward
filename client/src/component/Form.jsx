@@ -44,6 +44,7 @@ function Form() {
         from: '',
         recipient: '',
       });
+      navigate('/');
     } catch (err) {
       console.error(`Error creating post:`, err);
     }
@@ -133,7 +134,7 @@ function Form() {
           </label>
 
           <label className='flex flex-row'>
-            <p>Song Linkt:</p>&nbsp;
+            <p>Song Link:</p>&nbsp;
             <input
               className='bg-[#fff] text-black w-full'
               placeholder='Song Link'
@@ -148,13 +149,13 @@ function Form() {
             type='submit'
             value='submit'
             onClick={() => {
-              navigate('/');
+              handleSubmit();
             }}
           />
         </form>
         {isSubmitted && <p>Dedication successfully sent!</p>}
       </div>
-      <p className='read-the-docs'>Placeholder footer</p>
+      <p className='read-the-docs'>© 2025 Play It Forward. All rights reserved</p>
     </div>
   );
 }
