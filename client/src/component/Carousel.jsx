@@ -5,6 +5,22 @@ import 'slick-carousel/slick/slick-theme.css';
 import '../index.css'; //PARA PONER TRANSPARENTE LOS SLICK-ARROWS
 
 export default class Carousel extends Component {
+
+  formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const dateOptions = {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+    };
+    return date.toLocaleDateString('en-US', dateOptions);
+  }
+
   render() {
     const settings = {
       dots: true,
@@ -23,7 +39,9 @@ export default class Carousel extends Component {
     return (
       <div className=''>
         <Slider {...settings}>
+          
           {posts.map((element) => {
+            const formattedDate = this.formatDate(element.created_at);
             return (
               <li
                 className='flex flex-col gap-0.5 border-2 border-[#fff] w-full h-96 overflow-hidden p-10'
@@ -35,7 +53,7 @@ export default class Carousel extends Component {
                 <p>Song Artist: {element.song.artist}</p>
                 <p>Song Link: {element.song.link}</p>
                 <p>Message: {element.message}</p>
-                <p>Created At:{element.created_at}</p>
+                <p>Created At: {formattedDate}</p>
               </li>
             );
           })}
